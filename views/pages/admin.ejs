@@ -1,0 +1,53 @@
+<%- include("../partials/header") %>
+
+<h2>Admin Panel - Manage Products</h2>
+
+<!-- Add Product Form -->
+<h3>Add New Product</h3>
+<form action="/products/admin/add" method="POST" class="form">
+  <input type="text" name="name" placeholder="Product Name" required />
+  <input type="text" name="description" placeholder="Description" required />
+  <input type="number" name="price" placeholder="Price" required />
+  <input type="text" name="image" placeholder="Image URL" required />
+  <button type="submit">Add Product</button>
+</form>
+
+<hr />
+
+<!-- List all products with Edit/Delete -->
+<h3>Existing Products</h3>
+<table border="1" cellpadding="10">
+  <tr>
+    <th>Name</th>
+    <th>Description</th>
+    <th>Price</th>
+    <th>Image</th>
+    <th>Actions</th>
+  </tr>
+
+  <% products.forEach(product => { %>
+    <tr>
+      <td><%= product.name %></td>
+      <td><%= product.description %></td>
+      <td><%= product.price %></td>
+      <td><img src="<%= product.image %>" width="50" /></td>
+      <td>
+        <!-- Edit form -->
+        <form action="/products/admin/edit/<%= product._id %>" method="POST" style="display:inline;">
+          <input type="hidden" name="name" value="<%= product.name %>">
+          <input type="hidden" name="description" value="<%= product.description %>">
+          <input type="hidden" name="price" value="<%= product.price %>">
+          <input type="hidden" name="image" value="<%= product.image %>">
+          <button type="submit">Edit</button>
+        </form>
+
+        <!-- Delete form -->
+        <form action="/products/admin/delete/<%= product._id %>" method="POST" style="display:inline;">
+          <button type="submit">Delete</button>
+        </form>
+      </td>
+    </tr>
+  <% }) %>
+</table>
+
+<%- include("../partials/footer") %>

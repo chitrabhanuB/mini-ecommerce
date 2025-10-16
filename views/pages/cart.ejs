@@ -1,0 +1,52 @@
+<%- include("../partials/header") %>
+
+<div class="container">
+  <h2 class="page-title">🛒 Your Cart</h2>
+
+  <% if (cart && cart.length > 0) { %>
+    <div class="cart-table-wrapper">
+      <table class="cart-table">
+        <thead>
+          <tr>
+            <th>Product</th>
+            <th>Quantity</th>
+            <th>Price</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% cart.forEach(item => { %>
+            <tr>
+              <td>
+                <% if (item.image) { %>
+                  <img src="<%= item.image %>" alt="<%= item.name %>" class="cart-product-img">
+                <% } %>
+                <%= item.name %>
+              </td>
+              <td><%= item.quantity %></td>
+              <td>₹<%= (item.price * item.quantity).toFixed(2) %></td>
+              <td>
+                <form method="POST" action="/cart/remove/<%= item.productId %>">
+                  <button type="submit" class="btn-remove">Remove</button>
+                </form>
+              </td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+
+      <p class="cart-total">
+        <strong>Total:</strong> ₹
+        <%= cart.reduce((total, p) => total + p.price * p.quantity, 0).toFixed(2) %>
+      </p>
+
+      <form method="POST" action="/cart/clear">
+        <button type="submit" class="btn-clear">Clear Cart</button>
+      </form>
+    </div>
+  <% } else { %>
+    <p class="empty-msg">Your cart is empty 🛒</p>
+  <% } %>
+</div>
+
+<%- include("../partials/footer") %>

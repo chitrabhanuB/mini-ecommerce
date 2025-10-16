@@ -1,0 +1,37 @@
+<%- include("../partials/header") %>
+
+<div class="container">
+  <h2 class="page-title">🛍️ Our Products</h2>
+
+  <% if (products.length > 0) { %>
+    <div class="products-grid">
+      <% products.forEach(product => { %>
+        <div class="product-card">
+          <% if (product.image) { %>
+            <img src="<%= product.image %>" alt="<%= product.name %>" class="product-img">
+          <% } else { %>
+            <div class="product-img placeholder">No Image</div>
+          <% } %>
+
+          <div class="product-info">
+            <h3><%= product.name %></h3>
+            <p class="desc"><%= product.description %></p>
+            <p class="price">₹<%= product.price.toFixed(2) %></p>
+
+            <% if (user) { %>
+              <form method="POST" action="/cart/add/<%= product._id %>">
+                <button type="submit" class="btn-add">Add to Cart 🛒</button>
+              </form>
+            <% } else { %>
+              <p class="login-hint">Please <a href="/login">login</a> to add to cart.</p>
+            <% } %>
+          </div>
+        </div>
+      <% }) %>
+    </div>
+  <% } else { %>
+    <p class="empty-msg">No products available at the moment.</p>
+  <% } %>
+</div>
+
+<%- include("../partials/footer") %>
